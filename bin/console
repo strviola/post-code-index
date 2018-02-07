@@ -1,0 +1,8 @@
+#!/usr/bin/env ruby
+
+require_relative '../lib/post_code_index'
+require 'pry'
+
+include PostCodeIndex
+
+Pry.start
