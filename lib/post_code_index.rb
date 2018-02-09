@@ -1,3 +1,4 @@
+require 'csv'
 require_relative './common_util'
 include CommonUtil
 
@@ -18,5 +19,10 @@ module PostCodeIndex
       end
     end
     record_hash
+  end
+
+  def n_gram_dictionary(csv_string, n = 2)
+    csv_table = CSV.parse(csv_string)
+    # TODO: WIP
   end
 end
