@@ -1,8 +1,12 @@
 #!/usr/bin/env ruby
 
 require_relative '../lib/post_code_index'
+require_relative '../lib/common_util'
+require_relative '../lib/zip_converter'
 require 'pry'
 
 include PostCodeIndex
+include CommonUtil
+include ZipConverter
 
 Pry.start
