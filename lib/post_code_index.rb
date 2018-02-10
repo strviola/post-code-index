@@ -22,7 +22,19 @@ module PostCodeIndex
   end
 
   def n_gram_dictionary(csv_string, n = 2)
-    csv_table = CSV.parse(csv_string)
-    # TODO: WIP
+    dictionary_hash = {}
+    CSV.parse(csv_string).each do |post_code_array|
+      record_hash = n_gram_record_hash(post_code_array)
+      post_code = record_hash.values.first
+      record_hash.keys.each do |key_word|
+        if (post_codes = dictionary_hash[key_word])
+          post_codes << post_code
+          dictionary_hash[key_word] = post_codes
+        else
+          dictionary_hash[key_word] = [post_code]
+        end
+      end
+    end
+    dictionary_hash
   end
 end
