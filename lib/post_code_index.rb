@@ -52,4 +52,17 @@ module PostCodeIndex
     end
     true
   end
+
+  def concat_post_code_table(csv_string)
+    table_hash = {}
+    prev_record = []
+    CSV.parse(csv_string).each do |post_code_array|
+      if prev_record[POST_CODE_INDEX] == post_code_array[POST_CODE_INDEX]
+        post_code_array[TOWN_INDEX] = prev_record[TOWN_INDEX] + post_code_array[TOWN_INDEX]
+      end
+      table_hash[post_code_array[POST_CODE_INDEX]] = post_code_array
+      prev_record = post_code_array
+    end
+    table_hash
+  end
 end
