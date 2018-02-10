@@ -5,6 +5,7 @@ module CommonUtil
   TOWN_INDEX = 8
 
   POST_CODE_FILE_NAME = 'KEN_ALL_UTF.csv'
+  CONCAT_POST_CODE_FILE_NAME = 'post_code.rb'
   N_GRAM_FILE_NAME = 'n_gram_dictionary_%d.rb'
 
   def cache_dir(file_name)

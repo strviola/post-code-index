@@ -65,4 +65,20 @@ module PostCodeIndex
     end
     table_hash
   end
+
+  def create_concat_post_codes
+    return unless File.exists?(cache_dir(POST_CODE_FILE_NAME))
+    File.open(cache_dir(POST_CODE_FILE_NAME), 'r') do |input_csv|
+      csv_all = input_csv.read
+      dictionary = concat_post_code_table(csv_all)
+      File.open(cache_dir(CONCAT_POST_CODE_FILE_NAME), 'w') do |output_rb|
+        output_rb.puts <<~RUBY
+          module PostCode
+            DICTIONARY = #{dictionary}
+          end
+        RUBY
+      end
+    end
+    true
+  end
 end
