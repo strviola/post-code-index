@@ -51,4 +51,11 @@ describe PostCodeIndex do
       })
     end
   end
+
+  describe 'crate_hash_file' do
+    subject { crate_hash_file }
+    it 'create file' do
+      is_expected.to eq true
+    end
+  end
 end
