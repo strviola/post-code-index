@@ -8,6 +8,9 @@ module ZipConverter
         local.puts remote.read
       end
     end
+    # TODO: expand zip file
+    # TODO: convert character set Shift_JIS to UTF-8
+    # TODO: put to POST_CODE_FILE_NAME (KEN_ALL_UTF.csv)
     true
   end
 end

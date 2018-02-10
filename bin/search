@@ -1,0 +1,13 @@
+#!/usr/bin/env ruby
+
+require_relative '../lib/post_code_index'
+require_relative '../lib/common_util'
+
+include PostCodeIndex
+include CommonUtil
+
+unless File.exists?(cache_dir(POST_CODE_FILE_NAME))
+  require_relative '../lib/zip_converter'
+  include ZipConverter
+  download_post_code_zip
+end
