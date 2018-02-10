@@ -10,23 +10,22 @@ module PostCodeIndex
     end
   end
 
-  def n_gram_record_hash(post_code_array, n = 2)
-    record_hash = {}
+  def n_gram_post_code_words(post_code_array, n = 2)
+    key_words = []
     [PREF_INDEX, CITY_INDEX, TOWN_INDEX].each do |index|
       name = post_code_array[index]
       n_gram_array(name, n).each do |key_word|
-        record_hash[key_word] = post_code_array[POST_CODE_INDEX]
+        key_words << key_word
       end
     end
-    record_hash
+    [post_code_array[POST_CODE_INDEX], key_words.uniq]
   end
 
   def n_gram_dictionary(csv_string, n = 2)
     dictionary_hash = {}
     CSV.parse(csv_string).each do |post_code_array|
-      record_hash = n_gram_record_hash(post_code_array)
-      post_code = record_hash.values.first
-      record_hash.keys.each do |key_word|
+      post_code, key_words = n_gram_post_code_words(post_code_array, n)
+      key_words.each do |key_word|
         if (post_codes = dictionary_hash[key_word])
           post_codes << post_code
           dictionary_hash[key_word] = post_codes
