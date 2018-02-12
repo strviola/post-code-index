@@ -25,4 +25,8 @@ unless File.exists?(cache_dir(POST_CODE_FILE_NAME))
   require_relative '../lib/zip_converter'
   include ZipConverter
   download_post_code_zip
+  expand_zip
+  convert_charset
+  $stderr.puts 'Serializing post code CSV...'
+  create_concat_post_codes
 end
