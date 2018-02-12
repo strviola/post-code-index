@@ -1,12 +1,27 @@
 #!/usr/bin/env ruby
 
-require_relative '../lib/post_code_index'
-require_relative '../lib/common_util'
+require 'pry'
+# to debug, write 'Pry.start'
 
-include PostCodeIndex
+require_relative '../lib/common_util'
+require_relative '../lib/post_code_index'
+
 include CommonUtil
+include PostCodeIndex
+
+keyword = ARGV[0]
+unless keyword
+  $stderr.puts 'Usage: bin/search <keyword> [<n>]'
+  exit
+end
+
+n = (ARGV[1] || 2).to_i
+
+puts keyword
+puts n
 
 unless File.exists?(cache_dir(POST_CODE_FILE_NAME))
+  $stderr.puts 'Downloading post code data from japanpost.jp...'
   require_relative '../lib/zip_converter'
   include ZipConverter
   download_post_code_zip
