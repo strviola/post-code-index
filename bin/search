@@ -15,10 +15,7 @@ unless keyword
   exit
 end
 
-n = (ARGV[1] || 2).to_i
-
-puts keyword
-puts n
+n = [(ARGV[1] || 2).to_i, keyword.size].min
 
 unless File.exists?(cache_dir(POST_CODE_FILE_NAME))
   $stderr.puts 'Downloading post code data from japanpost.jp...'
@@ -30,3 +27,11 @@ unless File.exists?(cache_dir(POST_CODE_FILE_NAME))
   $stderr.puts 'Serializing post code CSV...'
   create_concat_post_codes
 end
+
+unless File.exists?(cache_dir(N_GRAM_FILE_NAME % n))
+  $stderr.puts "Generating #{n}-gram dictionary..."
+  crate_hash_file(n)
+end
+
+require_relative "../lib/cache/n_gram_dictionary_#{n}"
+eval "include NGramDictionary#{n}"
