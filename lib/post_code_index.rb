@@ -47,4 +47,19 @@ module PostCodeIndex
     end
     found.inject(:&)
   end
+
+  def find_record(dictionary, post_codes, keyword_div)
+    records = []
+    post_codes.each do |post_code|
+      found = dictionary[post_code]
+      if found.size == 1 # 重複・結合共になし
+        records << found.first
+      elsif found.first[TOWN_INDEX].size >= 36 # 結合あり
+        # TODO: 結合して records に追加
+      else # 重複あり…改めて検索
+        # TODO: keyword_div を使って検索
+      end
+    end
+    records
+  end
 end
