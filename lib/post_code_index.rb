@@ -52,4 +52,8 @@ module PostCodeIndex
     end
     true
   end
+
+  def search_by_n_gram(n_gram_dictionary, keyword, n = 2)
+    # TODO: implement
+  end
 end

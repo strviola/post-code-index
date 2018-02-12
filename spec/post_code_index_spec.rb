@@ -51,4 +51,33 @@ describe PostCodeIndex do
       })
     end
   end
+
+  describe 'search_by_n_gram' do
+    subject { search_by_n_gram(n_gram_dictionary, keyword) }
+    let(:n_gram_dictionary) do
+      {
+        '東京' => ['1620044', '1690074', '1620834'],
+        '京都' => ['1620044', '1690074', '1620834'],
+        '新宿' => ['1620044', '1690074', '1620834'],
+        '宿区' => ['1620044', '1690074', '1620834'],
+        '喜久' => ['1620044'],
+        '久井' => ['1620044'],
+        '井町' => ['1620044'],
+        '北新' => ['1690074'],
+        '北町' => ['1620834'],
+      }
+    end
+    context 'common keyword' do
+      let(:keyword) { '新宿区' }
+      it 'find post codes' do
+        is_expected.to match_array ['1620044', '1690074', '1620834']
+      end
+    end
+    context 'long keyword' do
+      let(:keyword) { '新宿区喜久井町' }
+      it 'find post codes' do
+        is_expected.to match_array ['1620044']
+      end
+    end
+  end
 end
