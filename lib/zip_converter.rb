@@ -13,4 +13,33 @@ module ZipConverter
     # TODO: put to POST_CODE_FILE_NAME (KEN_ALL_UTF.csv)
     true
   end
+
+  def concat_post_code_table(csv_string)
+    table_hash = {}
+    prev_record = []
+    CSV.parse(csv_string).each do |post_code_array|
+      if prev_record[POST_CODE_INDEX] == post_code_array[POST_CODE_INDEX]
+        post_code_array[TOWN_INDEX] = prev_record[TOWN_INDEX] + post_code_array[TOWN_INDEX]
+      end
+      table_hash[post_code_array[POST_CODE_INDEX]] = post_code_array
+      prev_record = post_code_array
+    end
+    table_hash
+  end
+
+  def create_concat_post_codes
+    return unless File.exists?(cache_dir(POST_CODE_FILE_NAME))
+    File.open(cache_dir(POST_CODE_FILE_NAME), 'r') do |input_csv|
+      csv_all = input_csv.read
+      dictionary = concat_post_code_table(csv_all)
+      File.open(cache_dir(CONCAT_POST_CODE_FILE_NAME), 'w') do |output_rb|
+        output_rb.puts <<~RUBY
+          module PostCode
+            DICTIONARY = #{dictionary}
+          end
+        RUBY
+      end
+    end
+    true
+  end
 end
