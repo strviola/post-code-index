@@ -57,7 +57,9 @@ module PostCodeIndex
       elsif found.first[TOWN_INDEX].size >= 30 # 結合あり
         # 本来38文字だが文字コードの関係上やや少なくする
         # 参考: http://www.post.japanpost.jp/zipcode/dl/readme.html
-        # TODO: 結合して records に追加
+        town_name = found.map { |record| record[TOWN_INDEX] }.join
+        found.first[TOWN_INDEX] = town_name
+        records << found.first
       else # 重複あり…改めて検索
         keyword_include = found.select do |record|
           keyword_div.map do |keyword|
