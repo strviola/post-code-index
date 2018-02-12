@@ -54,10 +54,19 @@ module PostCodeIndex
       found = dictionary[post_code]
       if found.size == 1 # 重複・結合共になし
         records << found.first
-      elsif found.first[TOWN_INDEX].size >= 36 # 結合あり
+      elsif found.first[TOWN_INDEX].size >= 30 # 結合あり
+        # 本来38文字だが文字コードの関係上やや少なくする
+        # 参考: http://www.post.japanpost.jp/zipcode/dl/readme.html
         # TODO: 結合して records に追加
       else # 重複あり…改めて検索
-        # TODO: keyword_div を使って検索
+        keyword_include = found.select do |record|
+          keyword_div.map do |keyword|
+            record.map do |element|
+              element.include?(keyword)
+            end.inject(:|)
+          end.inject(:&)
+        end
+        records.concat(keyword_include)
       end
     end
     records

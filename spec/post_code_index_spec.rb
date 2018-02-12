@@ -139,7 +139,7 @@ describe PostCodeIndex do
     end
     context 'find duplicated record' do
       let(:post_codes) { ['6028272'] }
-      let(:keyword_div) { ['亀木町'] }
+      let(:keyword_div) { ['京', '亀'] }
       it 'find record in duplicated record' do
         is_expected.to match_array [[
           '26102', '602  ', '6028272', 'キョウトフ', 'キョウトシカミギョウク', 'カメキチョウ',
