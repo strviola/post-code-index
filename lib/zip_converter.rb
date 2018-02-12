@@ -1,4 +1,5 @@
 require 'open-uri'
+require 'zip'
 
 module ZipConverter
   def download_post_code_zip
@@ -8,11 +9,20 @@ module ZipConverter
         local.puts remote.read
       end
     end
-    # TODO: expand zip file
-    # TODO: convert character set Shift_JIS to UTF-8
-    # TODO: put to POST_CODE_FILE_NAME (KEN_ALL_UTF.csv)
     true
   end
+
+  def expand_zip
+    Zip::File.open(cache_dir('ken_all.zip')) do |zip|
+      zip.each do |entry|
+        # 1 file 'KEN_ALL.CSV' is generated
+        zip.extract(entry, cache_dir(entry.name)) { true }
+      end
+    end
+  end
+
+  # TODO: convert character set Shift_JIS to UTF-8
+  # TODO: put to POST_CODE_FILE_NAME (KEN_ALL_UTF.csv)
 
   def concat_post_code_table(csv_string)
     table_hash = {}

@@ -24,6 +24,7 @@ GEM
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.7.0)
     rspec-support (3.7.1)
+    rubyzip (1.2.1)
 
 PLATFORMS
   ruby
@@ -32,6 +33,7 @@ DEPENDENCIES
   pry
   pry-byebug
   rspec
+  rubyzip
 
 BUNDLED WITH
    1.16.0
