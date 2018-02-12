@@ -10,14 +10,8 @@ module PostCodeIndex
   end
 
   def n_gram_post_code_words(post_code_array, n = 2)
-    key_words = []
-    [PREF_INDEX, CITY_INDEX, TOWN_INDEX].each do |index|
-      name = post_code_array[index]
-      n_gram_array(name, n).each do |key_word|
-        key_words << key_word
-      end
-    end
-    [post_code_array[POST_CODE_INDEX], key_words.uniq]
+    name = [PREF_INDEX, CITY_INDEX, TOWN_INDEX].map { |index| post_code_array[index] }.join
+    [post_code_array[POST_CODE_INDEX], n_gram_array(name, n).uniq]
   end
 
   def n_gram_dictionary(csv_string, n = 2)
