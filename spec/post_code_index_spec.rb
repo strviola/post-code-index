@@ -11,8 +11,8 @@ describe PostCodeIndex do
       let(:n) { 6 }
       it { is_expected.to match_array %w(abcbcd) }
     end
-    context 'n = 7 (bigger than string size)' do
-      let(:n) { 7 }
+    context 'n = 10 (bigger than string size)' do
+      let(:n) { 10 }
       it { is_expected.to match_array %w(abcbcd) }
     end
   end

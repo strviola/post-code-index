@@ -4,12 +4,8 @@ include CommonUtil
 
 module PostCodeIndex
   def n_gram_array(string, n = 2)
-    if n > string.size
-      [string]
-    else
-      (0..(string.size - n)).map do |i|
-        string[i..(i + n - 1)]
-      end
+    (0..[(string.size - n), 0].max).map do |i|
+      string[i..(i + [n, string.size].min - 1)]
     end
   end
 
