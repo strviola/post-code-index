@@ -38,7 +38,7 @@ module PostCodeIndex
       File.open(cache_dir(N_GRAM_FILE_NAME) % n, 'w') do |output_rb|
         output_rb.puts <<~RUBY
           module NGramDictionary#{n}
-            DICTIONARY = #{dictionary}
+            N_GRAM_DICTIONARY = #{dictionary}
           end
         RUBY
       end

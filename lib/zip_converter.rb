@@ -35,7 +35,7 @@ module ZipConverter
       File.open(cache_dir(CONCAT_POST_CODE_FILE_NAME), 'w') do |output_rb|
         output_rb.puts <<~RUBY
           module PostCode
-            DICTIONARY = #{dictionary}
+            POST_CODE_DICTIONARY = #{dictionary}
           end
         RUBY
       end
