@@ -41,6 +41,6 @@ require_relative "../lib/cache/n_gram_dictionary_#{n}"
 eval "include NGramDictionary#{n}"
 
 post_codes = search_by_n_gram(N_GRAM_DICTIONARY, keyword, n)
-post_codes.each do |post_code|
-  puts POST_CODE_DICTIONARY[post_code].to_s[1..-2].gsub(/, /, ',')
+find_record(POST_CODE_DICTIONARY, post_codes, n_gram_array(keyword, n)).each do |record|
+  puts record.to_s[1..-2].gsub(/, /, ',')
 end
