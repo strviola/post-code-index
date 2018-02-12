@@ -15,7 +15,13 @@ unless keyword
   exit
 end
 
-n = [(ARGV[1] || 2).to_i, keyword.size].min
+n_tmp = begin
+  Integer(ARGV[1] || 2)
+rescue ArgumentError => e
+  $stderr.puts 'Usage: bin/search <keyword> [<n>]'
+  exit
+end
+n = [n_tmp, keyword.size].min
 
 unless File.exists?(cache_dir(POST_CODE_FILE_NAME))
   $stderr.puts 'Downloading post code data from japanpost.jp...'
