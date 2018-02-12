@@ -28,14 +28,15 @@ unless File.exists?(cache_dir(POST_CODE_FILE_NAME))
   create_concat_post_codes
 end
 
-require_relative '../lib/cache/post_code'
-include PostCode
-
 unless File.exists?(cache_dir(N_GRAM_FILE_NAME % n))
   $stderr.puts "Generating #{n}-gram dictionary..."
   crate_hash_file(n)
 end
 
+$stderr.puts 'Loading...'
+
+require_relative '../lib/cache/post_code'
+include PostCode
 require_relative "../lib/cache/n_gram_dictionary_#{n}"
 eval "include NGramDictionary#{n}"
 
