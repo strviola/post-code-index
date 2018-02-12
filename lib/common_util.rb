@@ -11,4 +11,14 @@ module CommonUtil
   def cache_dir(file_name)
     File.expand_path("../cache/#{file_name}", __FILE__)
   end
+
+  def read_and_write(input_file_name, output_file_name)
+    return unless File.exists?(cache_dir(input_file_name))
+    File.open(cache_dir(input_file_name), 'r') do |input|
+      File.open(cache_dir(output_file_name), 'w') do |output|
+        yield input, output
+      end
+    end
+    true
+  end
 end

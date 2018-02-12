@@ -23,13 +23,9 @@ module ZipConverter
   end
 
   def convert_charset
-    return unless File.exists?(cache_dir('KEN_ALL.CSV'))
-    File.open(cache_dir('KEN_ALL.CSV'), 'r') do |sjis|
-      File.open(cache_dir(POST_CODE_FILE_NAME), 'w') do |utf|
-        utf.puts sjis.read.kconv(Kconv::UTF8, Kconv::SJIS)
-      end
+    read_and_write('KEN_ALL.CSV', POST_CODE_FILE_NAME) do |sjis, utf|
+      utf.puts sjis.read.kconv(Kconv::UTF8, Kconv::SJIS)
     end
-    true
   end
 
   def concat_post_code_table(csv_string)
@@ -46,18 +42,13 @@ module ZipConverter
   end
 
   def create_concat_post_codes
-    return unless File.exists?(cache_dir(POST_CODE_FILE_NAME))
-    File.open(cache_dir(POST_CODE_FILE_NAME), 'r') do |input_csv|
-      csv_all = input_csv.read
-      dictionary = concat_post_code_table(csv_all)
-      File.open(cache_dir(CONCAT_POST_CODE_FILE_NAME), 'w') do |output_rb|
-        output_rb.puts <<~RUBY
-          module PostCode
-            POST_CODE_DICTIONARY = #{dictionary}
-          end
-        RUBY
-      end
+    read_and_write(POST_CODE_FILE_NAME, CONCAT_POST_CODE_FILE_NAME) do |input_csv, output_rb|
+      dictionary = concat_post_code_table(input_csv.read)
+      output_rb.puts <<~RUBY
+        module PostCode
+          POST_CODE_DICTIONARY = #{dictionary}
+        end
+      RUBY
     end
-    true
   end
 end

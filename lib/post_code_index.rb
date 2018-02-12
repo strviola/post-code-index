@@ -31,19 +31,14 @@ module PostCodeIndex
   end
 
   def crate_hash_file(n = 2)
-    return unless File.exists?(cache_dir(POST_CODE_FILE_NAME))
-    File.open(cache_dir(POST_CODE_FILE_NAME), 'r') do |input_csv|
-      csv_all = input_csv.read
-      dictionary = n_gram_dictionary(csv_all, n)
-      File.open(cache_dir(N_GRAM_FILE_NAME) % n, 'w') do |output_rb|
-        output_rb.puts <<~RUBY
-          module NGramDictionary#{n}
-            N_GRAM_DICTIONARY = #{dictionary}
-          end
-        RUBY
-      end
+    read_and_write(POST_CODE_FILE_NAME, N_GRAM_FILE_NAME % n) do |input_csv, output_rb|
+      dictionary = n_gram_dictionary(input_csv.read, n)
+      output_rb.puts <<~RUBY
+        module NGramDictionary#{n}
+          N_GRAM_DICTIONARY = #{dictionary}
+        end
+      RUBY
     end
-    true
   end
 
   def search_by_n_gram(n_gram_dictionary, keyword, n = 2)
