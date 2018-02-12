@@ -53,6 +53,9 @@ module PostCodeIndex
   end
 
   def search_by_n_gram(n_gram_dictionary, keyword, n = 2)
-    # TODO: implement
+    found = n_gram_array(keyword, n).map do |keyword_div|
+      n_gram_dictionary[keyword_div] || []
+    end
+    found.inject(:&)
   end
 end

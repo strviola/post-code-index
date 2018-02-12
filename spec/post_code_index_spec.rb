@@ -52,7 +52,7 @@ describe PostCodeIndex do
     end
   end
 
-  xdescribe 'search_by_n_gram' do
+  describe 'search_by_n_gram' do
     subject { search_by_n_gram(n_gram_dictionary, keyword) }
     let(:n_gram_dictionary) do
       {
