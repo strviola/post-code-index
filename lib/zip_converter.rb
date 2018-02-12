@@ -1,5 +1,6 @@
 require 'open-uri'
 require 'zip'
+require 'kconv'
 
 module ZipConverter
   def download_post_code_zip
@@ -21,8 +22,15 @@ module ZipConverter
     end
   end
 
-  # TODO: convert character set Shift_JIS to UTF-8
-  # TODO: put to POST_CODE_FILE_NAME (KEN_ALL_UTF.csv)
+  def convert_charset
+    return unless File.exists?(cache_dir('KEN_ALL.CSV'))
+    File.open(cache_dir('KEN_ALL.CSV'), 'r') do |sjis|
+      File.open(cache_dir(POST_CODE_FILE_NAME), 'w') do |utf|
+        utf.puts sjis.read.kconv(Kconv::UTF8, Kconv::SJIS)
+      end
+    end
+    true
+  end
 
   def concat_post_code_table(csv_string)
     table_hash = {}
