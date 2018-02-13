@@ -52,14 +52,14 @@ end
 ## 検索方式
 
 1. post_code.rb が存在しない場合、以下の処理を行う。存在する場合は次に進む。
-  1. [郵便番号CSVデータ](http://www.post.japanpost.jp/zipcode/dl/kogaki/zip/ken_all.zip) をダウンロードする。
-  1. Zip ファイルを展開する。
-  1. 文字コードが Shift-JIS なので UTF-8 に変換し KEN_ALL_UTF.csv として lib/cache に保存。
-  1. KEN_ALL_UTF.csv を読み取り、郵便番号インデックスに変換して post_code.rb として保存する。
+  - [郵便番号CSVデータ](http://www.post.japanpost.jp/zipcode/dl/kogaki/zip/ken_all.zip) をダウンロード
+  - Zip ファイルを展開
+  - 文字コードが Shift-JIS なので UTF-8 に変換し KEN_ALL_UTF.csv として lib/cache に
+  - KEN_ALL_UTF.csv を読み取り、郵便番号インデックスに変換して post_code.rb として保存
 1. 実行引数から keyword, n を読み取る。
 1. n_gram_dictionary_#{n}.rb が存在しない場合、以下の処理を行う。存在する場合は次に進む。
-  1. KEN_ALL_UTF.csv を読み取り、 N-gram インデックスに変換して n_gram_dictionary_#{n}.rb として保存する。
+  - KEN_ALL_UTF.csv を読み取り、 N-gram インデックスに変換して n_gram_dictionary_#{n}.rb として保存
 1. keyword を n 文字ずつに分割する。
 1. `N_GRAM_DICTIONARY` から郵便番号の一覧を取得する。
 1. `POST_CODE_DICTIONARY` から郵便番号に対応するレコードを取得し、結果を表示する。
-  1. データが分割されている場合は結合して表示される。
+  - データが分割されている場合は結合して表示される。
