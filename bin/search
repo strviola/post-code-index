@@ -46,6 +46,8 @@ include PostCode
 require_relative "../lib/cache/n_gram_dictionary_#{n}"
 eval "include NGramDictionary#{n}"
 
+$stderr.puts 'Searching...'
+
 post_codes = search_by_n_gram(N_GRAM_DICTIONARY, keyword, n)
 find_record(POST_CODE_DICTIONARY, post_codes, n_gram_array(keyword, n)).each do |record|
   puts record.to_s[1..-2].gsub(/, /, ',')
