@@ -1,6 +1,6 @@
 # 技術資料
 
-## 実行方式
+## キャッシュファイル
 
 当プログラムでは以下の2種類のキャッシュファイルを使用します。
 
@@ -11,7 +11,7 @@
 
 ### 郵便番号インデックス
 
-内容は定数 `POST_CODE_DICTIONARY` が定義された `module` となっています。これは Ruby スクリプトとして読み込むことができ、以下の通り郵便番号とレコードを対応付けています。 (可読性のため一部空白と改行を追加しています)
+内容は定数 `POST_CODE_DICTIONARY` が定義された `module` となっています。これは Ruby スクリプトとして読み込むことができ、以下の通り郵便番号とレコードを対応付けています。 (可読性のため一部空白・改行・コメントを追加しています)
 
 ```post_code.rb
 module PostCode
@@ -48,3 +48,18 @@ module NGramDictionary2
   }
 end
 ```
+
+## 検索方式
+
+1. post_code.rb が存在しない場合、以下の処理を行う。存在する場合は次に進む。
+  1. [郵便番号CSVデータ](http://www.post.japanpost.jp/zipcode/dl/kogaki/zip/ken_all.zip) をダウンロードする。
+  1. Zip ファイルを展開する。
+  1. 文字コードが Shift-JIS なので UTF-8 に変換し KEN_ALL_UTF.csv として lib/cache に保存。
+  1. KEN_ALL_UTF.csv を読み取り、郵便番号インデックスに変換して post_code.rb として保存する。
+1. 実行引数から keyword, n を読み取る。
+1. n_gram_dictionary_#{n}.rb が存在しない場合、以下の処理を行う。存在する場合は次に進む。
+  1. KEN_ALL_UTF.csv を読み取り、 N-gram インデックスに変換して n_gram_dictionary_#{n}.rb として保存する。
+1. keyword を n 文字ずつに分割する。
+1. `N_GRAM_DICTIONARY` から郵便番号の一覧を取得する。
+1. `POST_CODE_DICTIONARY` から郵便番号に対応するレコードを取得し、結果を表示する。
+  1. データが分割されている場合は結合して表示される。
