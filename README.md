@@ -16,8 +16,10 @@
 
 ## 実行方法
 
+**TODO: このブランチだと変更されている**
+
 ```
-bin/search <keyword> [<n>]
+[N=n] bin/search
 ```
 
 ### 引数について
