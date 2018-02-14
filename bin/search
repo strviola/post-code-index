@@ -9,14 +9,8 @@ require_relative '../lib/post_code_index'
 include CommonUtil
 include PostCodeIndex
 
-# keyword = ARGV[0]
-# unless keyword
-#   $stderr.puts 'Usage: bin/search <keyword> [<n>]'
-#   exit
-# end
-
 n = begin
-  Integer(ARGV[0] || 2)
+  Integer(ENV['N'] || 2)
 rescue ArgumentError => e
   $stderr.puts 'Usage: bin/search <keyword> [<n>]'
   exit
@@ -38,21 +32,21 @@ unless File.exists?(cache_dir(N_GRAM_FILE_NAME % n))
   crate_hash_file(n)
 end
 
-$stderr.puts 'Loading...'
+$stderr.puts "Loading #{n}-gram dictionary..."
 
 require_relative '../lib/cache/post_code'
 include PostCode
 require_relative "../lib/cache/n_gram_dictionary_#{n}"
 eval "include NGramDictionary#{n}"
 
-$stderr.puts 'Searching...'
+$stderr.puts 'Input keyword. (Interrupt to exit)'
 
 begin
   loop do
     print '> '
     keyword = gets.chomp
     if n > keyword.size
-      $stderr.puts 'Skip! (Reason: keyword is too short)'
+      $stderr.puts 'Skip! (keyword is too short)'
       next
     end
     post_codes = search_by_n_gram(N_GRAM_DICTIONARY, keyword, n)
