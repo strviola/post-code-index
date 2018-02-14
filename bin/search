@@ -9,19 +9,18 @@ require_relative '../lib/post_code_index'
 include CommonUtil
 include PostCodeIndex
 
-keyword = ARGV[0]
-unless keyword
-  $stderr.puts 'Usage: bin/search <keyword> [<n>]'
-  exit
-end
+# keyword = ARGV[0]
+# unless keyword
+#   $stderr.puts 'Usage: bin/search <keyword> [<n>]'
+#   exit
+# end
 
-n_tmp = begin
-  Integer(ARGV[1] || 2)
+n = begin
+  Integer(ARGV[0] || 2)
 rescue ArgumentError => e
   $stderr.puts 'Usage: bin/search <keyword> [<n>]'
   exit
 end
-n = [n_tmp, keyword.size].min
 
 unless File.exists?(cache_dir(POST_CODE_FILE_NAME))
   $stderr.puts 'Downloading post code data from japanpost.jp...'
@@ -48,7 +47,24 @@ eval "include NGramDictionary#{n}"
 
 $stderr.puts 'Searching...'
 
-post_codes = search_by_n_gram(N_GRAM_DICTIONARY, keyword, n)
-find_record(POST_CODE_DICTIONARY, post_codes, n_gram_array(keyword, n)).each do |record|
-  puts record.to_s[1..-2].gsub(/, /, ',')
+begin
+  loop do
+    print '> '
+    keyword = gets.chomp
+    if n > keyword.size
+      $stderr.puts 'Skip! (Reason: keyword is too short)'
+      next
+    end
+    post_codes = search_by_n_gram(N_GRAM_DICTIONARY, keyword, n)
+    found_record = find_record(POST_CODE_DICTIONARY, post_codes, n_gram_array(keyword, n))
+    if found_record.size > 0
+      found_record.each do |record|
+        puts record.to_s[1..-2].gsub(/, /, ',')
+      end
+    else
+      $stderr.puts 'Not found.'
+    end
+  end
+rescue Interrupt
+  $stderr.puts 'Exit.'
 end
